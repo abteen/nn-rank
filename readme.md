@@ -10,7 +10,7 @@ To install the package:
     pip install -e .
 ```
 
-The `nnrank/example_scripts` folder hows different ways to use the package.
+The `nnrank/example_scripts` folder shows different ways to use the package.
 
 ## Reproducing Paper Results
 
