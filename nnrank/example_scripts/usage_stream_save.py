@@ -42,7 +42,6 @@ if __name__ == '__main__':
     for target_name in target_names:
         # Extract target datasets one by one to prevent out of memory
         new_ranker.load_hidden_representations(keys=[target_name], root_load_dir='example_outputs/stream_save/')
-        new_ranker.extract_hidden_representations(keys=[target_name])
         rankings[target_name] = new_ranker.rank([target_name])
 
     for target, ranking in rankings.items():
