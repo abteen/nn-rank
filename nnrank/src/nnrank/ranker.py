@@ -47,7 +47,6 @@ class NNRanker():
         source_languages: list of source languages
         index: FAISS index 
     """
-
     def __init__(self, model, layer=8):
         self.model = model
         self.layer = layer
@@ -70,7 +69,6 @@ class NNRanker():
         Returns:
             list: list of dictionaries
         """
-
         records = []
 
         with open(fpath, 'r') as f:
@@ -97,7 +95,6 @@ class NNRanker():
         Raises:
             TypeError: If language_list values are not strings or list of text.
         """
-
         if isinstance(language_list, dict):
 
                 for lang_name, lang_data in language_list.items():
@@ -119,7 +116,6 @@ class NNRanker():
         Args:
             source_languages (list): list of source languages denoted by unique key
         """
-
         self.source_languages = []
         for sl in source_languages:
             if sl not in self.data:
@@ -127,7 +123,6 @@ class NNRanker():
             self.source_languages.append(sl)
 
         print(f'Number of source languages {len(self.source_languages)}.')
-
 
     def get_source_languages(self):
         return self.source_languages
@@ -153,7 +148,6 @@ class NNRanker():
             save_every (int, optional): Number of iterations before stream_save. Defaults to 1000.
             max_seq_len (int, optional): Maximum sequence length for truncation. Defaults to 512.
         """
-
         keys = keys if keys is not None else list(self.data.keys())
 
         model = AutoModel.from_pretrained(self.model, config=self.config)
@@ -175,7 +169,6 @@ class NNRanker():
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir, exist_ok=True)
 
-
             records = self.data[key]
 
             for record in tqdm(records):
@@ -188,7 +181,6 @@ class NNRanker():
                     return_tensors='pt'
                 )
 
-
                 tokenized_record = {
                     'input_ids': enc['input_ids'],
                     'attention_mask': enc['attention_mask'],
@@ -196,7 +188,6 @@ class NNRanker():
                 }
 
                 record['tokenized'] = tokenized_record
-
 
             hidden_state_outputs = []
             input_id_outputs = []
@@ -277,7 +268,6 @@ class NNRanker():
             keys (list, optional): List of keys we want to save representations of. Defaults to None.
             root_output_dir (str, optional): Directory to save in. Defaults to 'hidden_representations/'.
         """
-
         keys = keys if keys is not None else list(self.hidden_representations.keys())
 
         layer_string = f'layer_{self.layer}'
@@ -313,7 +303,6 @@ class NNRanker():
             keys (list): Unique keys to load.
             root_load_dir (str): Directory to load from.
         """
-        
         for key in keys:
 
             load_dir = os.path.join(root_load_dir, key)
@@ -350,7 +339,6 @@ class NNRanker():
                     'idxs' : all_indices
                 }
 
-
     def rank(self, keys, k=5, recalculate_source=False):
         """Rank source languages for each target language.
 
@@ -361,7 +349,6 @@ class NNRanker():
         Returns:
             dict: dictionary mapping each target language to its ranking.
         """
-
         print(f'Generating ranking with {len(self.source_languages)} source languages and {len(keys)} target languages')
 
         if recalculate_source or self.index is None:
@@ -371,7 +358,6 @@ class NNRanker():
 
             self.index = faiss.IndexFlatIP(S.shape[1])
             self.index.add(S)
-
         else:
             print(f'FAISS index already calculated')
 
@@ -390,12 +376,9 @@ class NNRanker():
                 
             ranking[tl] = sorted([(lang, count) for lang, count in tl_result.items()], key = lambda x : x[1], reverse=True)
 
-
         self.ranking = ranking
         return ranking
             
-
-
     def verbose_ranking(self, keys, k=5):
         """Calculate ranking and show surface forms of tokens.
 
@@ -405,7 +388,6 @@ class NNRanker():
         Returns:
             dict: dictionary mapping from target language to ranking
         """
-
         print(f'Generating ranking with {len(self.source_languages)} source languages and {len(keys)} target languages')
 
         # Create S matrix
@@ -449,10 +431,8 @@ class NNRanker():
                 
                 break
                 
-
             counts[tl] = tl_result
             ranking[tl] = sorted([(lang, count) for lang, count in tl_result.items()], key = lambda x : x[1], reverse=True)
-
 
         self.ranking = ranking
         return ranking
