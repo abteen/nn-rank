@@ -88,11 +88,11 @@ class NNRanker():
         return records
 
     def load_text_data(self, language_list, limiter):
-        """_summary_
+        """Load all data.
 
         Args:
             language_list (dictionary): map unique identifier to string associated with file path or list of already loaded text
-            limiter (_type_): limit loading to first k files
+            limiter (int): limit loading to first k files
 
         Raises:
             TypeError: If language_list values are not strings or list of text.
@@ -114,7 +114,7 @@ class NNRanker():
                         raise TypeError(f'language_list values should be file path or list of loaded data, not {lang_data}')
 
     def set_source_languages(self, source_languages):
-        """Set source languages
+        """Set source languages.
 
         Args:
             source_languages (list): list of source languages denoted by unique key
