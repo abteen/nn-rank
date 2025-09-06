@@ -2,11 +2,21 @@
 
 This repository contains the code for NN-Rank. 
 
+## Python Package
+
+To install the package:
+```
+    cd nnrank/
+    pip install -e .
+```
+
+The `nnrank/example_scripts` folder hows different ways to use the package.
+
 ## Reproducing Paper Results
 
-The `nn_calculations/` folder contains the experiment code used to produce the results shown in the paper, with `scripts/` containing bash scripts used to run each Python script. In general, the process is to (1) extract hidden representations, (2) calculate the nearest neighbors, and (3) process this output and produce a ranking. Please see the [MWE](#nn-rank-minimum-working-example) section for detailed instructions on how to apply NN-Rank to your own data. 
+The `nn_calculations/` folder contains the experiment code used to produce the results shown in the paper, with `scripts/` containing bash scripts used to run each Python script. In general, the process is to (1) extract hidden representations, (2) calculate the nearest neighbors, and (3) process this output and produce a ranking. The [MWE](#nn-rank-minimum-working-example) contains more details on how to use the original experimental code. 
 
-## NN-Rank: Minimum Working Example
+### Minimum Working Example
 
 1. Setup environment variables using `startup.sh`:
     - PROJECT_DIR: location of repository root
